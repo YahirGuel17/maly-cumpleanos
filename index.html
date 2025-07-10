@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Cumpleaños Wita</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+      z-index: 0;
+      color: #333;
+    }
+
+    #video-background {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: -3;
+  opacity: 0.4;
+}
+
+
+    /* Capa flotante con gif animado */
+    #gif-fondo {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://i.pinimg.com/originals/4e/70/3f/4e703f4b2e31b19e40d88f93e30587f6.gif');
+      background-size: cover;
+      opacity: 0.15;
+      pointer-events: none;
+      animation: float 10s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(20px); }
+      100% { transform: translateY(0); }
+    }
+
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4rem;
+      color: #ff4d6d;
+      text-shadow: 2px 2px #fff;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      color: #d63384;
+      margin-bottom: 20px;
+    }
+
+    /* Portada */
+    .portada h1, .portada p {
+      padding: 15px 25px;
+      border-radius: 15px;
+      text-shadow: 2px 2px 4px #000;
+      max-width: 90%;
+      color: #fff0f5;
+    }
+
+    .portada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+    .portada h1 {
+      font-size: 4rem;
+      color: #ffe0f0;
+      margin-bottom: 20px;
+    }
+
+    .portada p {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    /* Cartas */
+    .cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.card {
+  background: #fff0f6;
+  border: 2px solid #ff85a2;
+  border-radius: 15px;
+  width: 280px;
+  min-height: 60px;
+  padding: 20px;
+  text-align: left;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-height: 60px;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+
+
+    .card.open {
+      max-height: 1000px;
+    }
+
+    .card h3 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: #ff4d6d;
+    }
+
+    .card p {
+      margin-top: 10px;
+    }
+
+    /* Motivos tipo flip */
+    .motivo-box {
+      perspective: 1000px;
+      display: inline-block;
+      margin: 20px;
+    }
+
+    .motivo-inner {
+      width: 250px;
+      height: 150px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .motivo-box:hover .motivo-inner {
+      transform: rotateY(180deg);
+    }
+
+    .motivo-front, .motivo-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      font-size: 1.2rem;
+      padding: 20px;
+    }
+
+    .motivo-front {
+      background-color: #ffe0ec;
+    }
+
+    .motivo-back {
+      background-color: #ffccd5;
+      transform: rotateY(180deg);
+    }
+
+    /* Sopa de letras */
+    .sopa-container {
+      margin: 60px auto;
+      max-width: 1000px;
+      background: #fff5f7;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .sopa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 2px;
+  font-size: 1.2rem;
+  font-family: monospace;
+  text-align: center;
+  margin-bottom: 20px;
+  justify-items: center;
+}
+
+
+    .sopa-grid div {
+      padding: 10px;
+      background: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .sopa-grid .selected {
+      background: #ffc0cb;
+    }
+
+    .word-list span {
+      margin: 0 10px;
+    }
+
+    .word-list .found {
+      text-decoration: line-through;
+      color: green;
+    }
+
+    #message {
+      margin-top: 10px;
+      font-weight: bold;
+      color: red;
+    }
+
+    button {
+      background: pink;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #ffb3c6;
+    }
+
+    .gif-container img {
+      width: 300px;
+      border-radius: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    .audio-cancion {
+  text-align: center;
+  margin-top: -40px; /* lo sube un poquito para que quede bien */
+  margin-bottom: 40px;
+}
+
+.audio-cancion audio {
+  border-radius: 12px;
+  background-color: #fff0f6;
+  padding: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.celda.correcta {
+  background-color: #b2f2bb !important; /* verde pastel */
+  color: #2f9e44;
+  font-weight: bold;
+}
+
+
+.carrusel-container {
+  text-align: center;
+  margin: 40px auto;
+}
+
+.carrusel-container h2 {
+  font-family: 'Dancing Script', cursive;
+  color: #ff4d6d;
+  margin-bottom: 20px;
+}
+
+.carrusel {
+  width: 80%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  background: white;
+  padding: 10px;
+}
+
+.carrusel img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+.botones-carrusel {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.boton-carrusel {
+  background-color: #ffb6c1;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.boton-carrusel:hover {
+  background-color: #ff4d6d;
+}
+
+.sopa-container p,
+.word-list {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6rem;
+  color: #d63384;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.word-list span {
+  margin: 0 12px;
+  display: inline-block;
+}
+
+/* Estilo para el nuevo título */
+#sopa-titulo {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: #d63384;
+  margin-bottom: 20px;
+}
+
+/* Contenedor decorativo */
+.sopa-titulo-circulo {
+  position: relative;
+  margin: 40px auto;
+  width: 300px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sopa-titulo-circulo h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.5rem;
+  color: #d63384;
+  text-shadow: 2px 2px #fff;
+}
+
+/* --- OPTIMIZACIÓN PARA CELULARES --- */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  header h1 {
+    font-size: 1.8em;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .cartas-container, .flip-card-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .flip-card {
+    width: 90vw;
+    height: auto;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    font-size: 1.1em;
+    padding: 15px;
+  }
+
+  .sopa-container {
+    width: 95vw;
+    font-size: 1em;
+    padding: 10px;
+  }
+
+  .sorpresa img {
+    width: 80vw;
+    height: auto;
+  }
+
+  .boton, .btn {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    width: 90%;
+  }
+
+  .circulo {
+    width: 100px;
+    height: 100px;
+    font-size: 0.9em;
+  }
+
+  video#videoFondo {
+    object-fit: cover;
+    min-height: 100vh;
+    width: 100%;
+  }
+
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .contenido {
+    width: 100%;
+    padding: 15px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .sopa-container {
+    padding: 15px;
+    width: 100%;
+  }
+
+  .sopa-grid {
+    grid-template-columns: repeat(auto-fit, minmax(28px, 1fr));
+    gap: 4px;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+
+  .sopa-grid div {
+    padding: 6px;
+    aspect-ratio: 1 / 1; /* Mantiene el cuadro cuadrado */
+    min-width: 28px;
+    min-height: 28px;
+    font-size: 1rem;
+  }
+
+  .word-list {
+    font-size: 1.1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .word-list span {
+    margin: 5px;
+    display: inline-block;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <!-- VIDEO DE FONDO -->
+  <video id="video-background" autoplay muted loop playsinline>
+    <source src="fondoamalia.mp4" type="video/mp4">
+  </video>
+
+  <!-- CAPA FLOTANTE GIF -->
+  <div id="gif-fondo"></div>
+
+  <!-- PORTADA -->
+  <section class="portada">
+    <h1>🎉 Feliz Cumpleaños a la Mejor Wita 🎉</h1>
+    <p>Con mucho amor, te dedicamos esta página especial 3 personitas que amas mucho 🌸</p>
+  </section>
+
+  <section class="audio-cancion">
+    <audio controls>
+      <source src="mañanitas1.mp3" type="audio/mp3">
+      Tu navegador no soporta el elemento de audio.
+    </audio>
+  </section>
+
+  <!-- CARTAS -->
+  <section>
+    <h2>Cartas para Ti 💌</h2>
+    <div class="cards-container">
+      <div class="card" onclick="toggleCard(this)">
+        <h3>De Yahir</h3>
+        <p>Hola wita, con ayuda de Nicole y un poco de mi tia hablándole hasta el cielo, te hicimos este regalo y en esta mini cartita quiero desearte un muy feliz cumpleaños!!. Me alegra que puedas celebrar este día rodeada de tu familia y de todo el cariño que te tienen. Es un buen momento para reconocer lo valiosa que eres para todos.
+            Te deseo mucha salud, tranquilidad y momentos lindos en este nuevo año de vida, Espero que sigas siendo parte de muchas alegrías y recuerdos compartidos con toda tu familia y esta nueva etapa donde ya estas mas apegada a Dios.
+            Te quiero mucho wita
+            atentamente: tu nieto favorito</p>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
+        <h3>De Nicole</h3>
+        <p>Feliz cumpleaños witaaaa hoy quiero decirte cuanto te amo y lo agradecida que estoy por tenerte porque siempre has sido un ejemplo de amor y fortaleza. Tu apoyo me envuelve y tus palabras me llenan de paz (menos cuando te enojas JAJAJA)
+            Gracias por ser esa abuela que me escucha, me consciente, me abraza, y siempre tiene tiempo y amor para dar
+            Te miro y aprendo, y deseo parecerme un poquito a ti cada día.
+            Te deseo un cumpleaños lleno de amor, rodeada de todos los que te amamos tanto, nunca cambies wita porque eres unica e irreemplazable.
+            Con todo mi amor, Tu nietaa (la mas gorrosa)</p>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
+        <h3>De alguien muy especial...</h3>
+        <p>Hola mamii, muchas felicidades a la mejor mamá que este mundo me pudo dar.
+            Yahir me hablo hasta el cielo para pedirme ayuda para que le escribiera en esta carta que le hizo y le quedo bien chingona al igual que la lona que pusieron en la quinta alonzooo
+            Pero bueno mami, la extraño mucho al igual que a todos, en especial a mi bebé yean que por cierto ya esta bien grande, pero desde el cielo le digo con el corazón lleno de amor que aunque mis brazos no puedan abrazarla, quiero que sepa que siempre estoy y estaré con usted… todos los dias la veo, la cuido y le sonrío desde donde estoy.
+            Gracias por ser mi mamá, por todo lo que me dió y por lo que sigue dando a quienes ama. Sé que me extraña y yo también la extraño a usted, pero no estoy lejos mami, aparte de estar siempre en la tienda cuidando y cuidándolos a ustedes, estoy en cada recuerdo bonito, en cada lágrima que limpia, en cada gesto de amor que da, en cada altarcito que me hacen… estoy en todos lados, siempre que me ponga, estaré ahi con ustedes mami.
+            Me siento muy orgullosa de usted, por como sigue adelante con tanta fuerza y amor 
+            Hoy en su cumpleaños, le mando una lluvia de besos desde el cielo. Disfrute este día rodeada de amor, porque usted lo mereces todo.
+            Y por favor lléveme en su corazón siempre mami. La amo mucho
+            con amor: su hija Dianita </p>
+      </div>
+    </div>
+  </section>
+
+<!-- CARRUSEL DE FOTOS -->
+<section class="carrusel-container">
+  <h2>Galeria de Recuerdos 📸</h2>
+  <div class="carrusel">
+    <img id="carrusel-img" src="foto1.jpg" alt="Foto 1">
+    <div class="botones-carrusel">
+      <button class="boton-carrusel" onclick="fotoAnterior()">⬅️</button>
+      <button class="boton-carrusel" onclick="siguienteFoto()">➡️</button>
+    </div>
+  </div>
+</section>
+
+  
+
+  <!-- MOTIVOS -->
+  <section>
+    <h2>Motivos por los que te queremos 💕</h2>
+    <div class="cards-container">
+      <div class="motivo-box">
+        <div class="motivo-inner">
+          <div class="motivo-front">Siempre nos haces reir</div>
+          <div class="motivo-back">Con las bromas que haces y el sentido del humor que tienes</div>
+        </div>
+      </div>
+      <div class="motivo-box">
+        <div class="motivo-inner">
+          <div class="motivo-front">Eres una gran cocinera</div>
+          <div class="motivo-back">Toda la comida tiene un toque que hace que sepa unica tu comida (en especial los frijoles charros, el mole y los tacos rojos)</div>
+        </div>
+      </div>
+      <div class="motivo-box">
+        <div class="motivo-inner">
+          <div class="motivo-front">Por que eres la mejor MADRE y ABUELA</div>
+          <div class="motivo-back">Cuando lo necesitan tus hijos o nietos, eres muy fuerte y nos llenas de apoyo y amor</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- TÍTULO SOPA EN CÍRCULO ROSA -->
+<section class="sopa-titulo-circulo">
+  <h2>Sopa de Letras</h2>
+</section>
+
+<div class="sopa-titulo-circulo">
+  <h2>Sopa de Letras</h2>
+</div>
+
+
+  <!-- SOPA DE LETRAS -->
+  <section class="sopa-container">
+    <p>Encuentra las siguientes palabras:</p>
+    <div class="word-list" id="wordList">
+      <span data-word="Yahir">Yahir</span>
+      <span data-word="Nicole">Nicole</span>
+      <span data-word="Yean">Yean</span>
+      <span data-word="Yessica">Yessica</span>
+      <span data-word="Diana">Diana</span>
+      <span data-word="Jenni">Jenni</span>
+      <span data-word="Erick">Erick</span>
+      <span data-word="Fabian">Fabian</span>
+      <span data-word="Dios">Dios</span>
+      <span data-word="Dios">Amalia</span>
+    </div>
+    <div class="sopa-grid" id="sopaGrid"></div>
+    <button onclick="verificarPalabra()">Verificar</button>
+    <div id="message"></div>
+  </section>
+
+  <!-- SORPRESA -->
+  <section class="gif-container">
+    <h2>Sorpresa Final 🎁</h2>
+    <img src="https://i.pinimg.com/originals/4e/c5/7f/4ec57f0a9c32b5cc3d539a7a20e29304.gif" alt="abrazo gif">
+    <p>UN ABRAZOOOOOO 💖💖💖</p>
+    <p>si completaste la sopa de letras, como premio, nicole te debe un masaje de pies</p>
+
+  </section>
+
+  <!-- SCRIPT FUNCIONAL -->
+  <script>
+    function toggleCard(card) {
+      document.querySelectorAll('.card').forEach(c => {
+        if (c !== card) c.classList.remove('open');
+      });
+      card.classList.toggle('open');
+    }
+  
+    const palabras = ['YAHIR', 'NICOLE', 'YEAN', 'YESSICA', 'DIANA', 'JENNI', 'ERICK', 'FABIAN', 'DIOS', 'AMALIA'];
+    const gridElement = document.getElementById('sopaGrid');
+    const filas = 14, columnas = 14;
+    let seleccion = [];
+  
+    function generarSopa() {
+      const letrasFijas = [
+        'D','F','E','Q','J','V','Y','A','H','I','R','P','H','J',
+        'A','S','G','Ñ','G','T','W','K','C','Z','I','T','X','T',
+        'N','I','C','O','L','E','P','Y','V','S','H','A','U','Y',
+        'N','B','A','N','J','O','U','L','K','Q','K','M','M','E',
+        'H','I','E','Q','U','N','V','Z','P','D','I','A','N','A',
+        'H','X','M','W','T','K','B','V','M','N','R','L','N','N',
+        'Y','E','S','S','I','C','A','H','K','X','C','I','O','P',
+        'H','V','K','G','U','B','D','L','J','Y','S','A','C','Y',
+        'J','K','E','P','N','V','D','U','R','E','T','S','B','P',
+        'Y','V','N','M','W','E','T','U','O','P','N','J','G','S',
+        'E','R','I','C','K','U','V','E','Q','M','Z','N','I','P',
+        'F','A','B','I','A','N','E','X','A','O','R','V','I','P',
+        'F','J','Q','U','R','W','Y','K','A','K','R','P','C','B',
+        'G','A','Q','P','Y','X','W','D','I','O','S','G','X','J'
+      ];
+  
+      gridElement.innerHTML = '';
+  
+      letrasFijas.forEach((letra, i) => {
+        const div = document.createElement('div');
+        div.textContent = letra;
+        div.dataset.index = i;
+        div.classList.add('celda');
+        div.addEventListener('click', seleccionarLetra);
+        gridElement.appendChild(div);
+      });
+    }
+  
+    function seleccionarLetra(event) {
+  const div = event.target;
+
+  // ✅ Ya no bloqueamos letras correctas, solo evitamos seleccionarlas 2 veces en una palabra
+  if (div.classList.contains('selected')) {
+    div.classList.remove('selected');
+    seleccion = seleccion.filter(d => d !== div);
+  } else {
+    div.classList.add('selected');
+    seleccion.push(div);
+  }
+}
+
+
+  
+function verificarPalabra() {
+  const palabraSeleccionada = seleccion.map(celda => celda.textContent).join('');
+  const palabraInvertida = palabraSeleccionada.split('').reverse().join('');
+  const messageDiv = document.getElementById('message');
+
+  const encontrada = palabras.includes(palabraSeleccionada) ? palabraSeleccionada :
+                     palabras.includes(palabraInvertida) ? palabraInvertida :
+                     null;
+
+  if (encontrada) {
+    seleccion.forEach(celda => {
+      celda.classList.add('correcta');
+      celda.classList.remove('selected');
+      celda.style.backgroundColor = '#b2f2bb'; // Verde pastel
+      celda.style.color = '#2f9e44';
+      celda.style.fontWeight = 'bold';
+    });
+
+    document.querySelectorAll('#wordList span').forEach(span => {
+      if (span.dataset.word.toUpperCase() === encontrada) {
+        span.classList.add('found');
+      }
+    });
+
+    messageDiv.textContent = '¡Palabra correcta!';
+    messageDiv.style.color = 'green';
+  } else {
+    // Solo quitamos el highlight de las no correctas
+    seleccion.forEach(celda => {
+      if (!celda.classList.contains('correcta')) {
+        celda.classList.remove('selected');
+      }
+    });
+
+    messageDiv.textContent = 'Ups, intenta otra vez.';
+    messageDiv.style.color = 'red';
+  }
+
+  seleccion = [];
+}
+
+  
+    generarSopa();
+
+// Carrusel de Fotos
+const fotos = [
+  'foto1.jpg',
+  'foto2.jpg',
+  'foto3.jpg',
+  'foto4.jpg',
+  'foto5.jpg',
+  'foto6.jpg',
+];
+
+let indiceFoto = 0;
+
+function mostrarFoto() {
+  document.getElementById('carrusel-img').src = fotos[indiceFoto];
+}
+
+function siguienteFoto() {
+  indiceFoto = (indiceFoto + 1) % fotos.length;
+  mostrarFoto();
+}
+
+function fotoAnterior() {
+  indiceFoto = (indiceFoto - 1 + fotos.length) % fotos.length;
+  mostrarFoto();
+}
+mostrarFoto(); // Esto asegura que la primera imagen del arreglo aparezca desde el inicio
+
+    </script>
+</body>
+</html>
